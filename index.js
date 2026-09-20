@@ -32,10 +32,11 @@ function getScheduledReminder(now) {
     for (const reminder of todaySchedule) {
         if (currentHour === reminder.hour && currentMinute === reminder.minute) {
             const key = `${currentDay}-${currentHour}-${currentMinute}`
+            const message = `${reminder.text}\n\n${reminder.link}`;
             if (!sentReminders.has(key)) {
                 sentReminders.add(key)
-                setTimeout(() => sentReminders.delete(key), 120000)
-                return reminder.text
+                setTimeout(() => sentReminders.delete(key), 60000)
+                return message
             }
         }
     }
@@ -72,9 +73,7 @@ async function startBot() {
         const { connection, qr } = update
 
         if (qr) {
-            // console.log('Scan QR code ini dengan HP kamu:')
             console.log('⚠️  Sesi tidak ditemukan atau expired. Jalankan ulang dan scan QR.')
-            // console.log('QR:', qr) // opsional: print raw string saja
             qrcode.generate(qr, { small: true })
         }
 
@@ -107,7 +106,7 @@ async function startBot() {
                 if (reminderText) {
                     try {
                         await sock.sendMessage(jid, { text: reminderText })
-                        console.log(`📨 Reminder terkirim (${now.toLocaleString()}): "${reminderText}"`)
+                        console.log(`📨 Reminder terkirim (${now.toLocaleString()})`)
                     } catch (err) {
                         console.log('❌ Gagal kirim reminder:', err.message)
                     }

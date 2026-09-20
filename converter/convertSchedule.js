@@ -36,6 +36,8 @@ function convertTextToJSON(rawText) {
             minute: minute,
             // customizable
             text: `${greeting} adaa kuliah ${matkul} di ruang ${ruangan}, kamuu jangan lupa absen yaa`,
+            // TODO: dynamic link
+            link: ''
             });
     }
     
