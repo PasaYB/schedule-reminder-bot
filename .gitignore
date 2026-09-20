@@ -1,0 +1,4 @@
+/node_modules
+/config/schedule.json
+/auth
+/converter/rawSchedule.txt
