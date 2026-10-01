@@ -5,10 +5,11 @@ import makeWASocket, {
 import P from 'pino'
 import qrcode from 'qrcode-terminal'
 import { readFileSync } from 'fs'
+import 'dotenv/config'
 
 const schedule = JSON.parse(readFileSync('./config/schedule.json', 'utf-8'))
 
-const number = "6282114980303"
+const number = process.env.TARGET_NUMBER;
 const jid = number + "@s.whatsapp.net"
 
 const sentReminders = new Set()
