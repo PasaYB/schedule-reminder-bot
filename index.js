@@ -65,7 +65,9 @@ async function startBot() {
         version,
         logger: P({ level: 'silent' }),
         auth: state,
-        printQRInTerminal: false
+        printQRInTerminal: false,
+        keepAliveIntervalMs: 15000,
+        connectTimeoutMs: 30000,
     })
 
     sock.ev.on('creds.update', saveCreds)
