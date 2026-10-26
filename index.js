@@ -75,7 +75,7 @@ async function startBot() {
     sock.ev.on('creds.update', saveCreds)
 
     sock.ev.on('connection.update', async (update) => {
-        const { connection, qr } = update
+        const { connection, qr, lastDisconnect } = update
 
         if (qr) {
             console.log('⚠️  Sesi tidak ditemukan atau expired. Jalankan ulang dan scan QR.')
