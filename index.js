@@ -1,6 +1,7 @@
 import makeWASocket, { 
     useMultiFileAuthState, 
-    fetchLatestBaileysVersion 
+    fetchLatestBaileysVersion,
+    DisconnectReason
 } from '@whiskeysockets/baileys'
 import P from 'pino'
 import qrcode from 'qrcode-terminal'
@@ -65,6 +66,7 @@ async function startBot() {
         version,
         logger: P({ level: 'silent' }),
         auth: state,
+        getMessage: async () => ({ conversation: '' }),
         printQRInTerminal: false,
         keepAliveIntervalMs: 15000,
         connectTimeoutMs: 30000,
@@ -81,9 +83,16 @@ async function startBot() {
         }
 
         if (connection === 'close') {
-            console.log('Koneksi terputus. Reconnecting...')
-            startBot()
-        } else if (connection === 'open') {
+            const code = lastDisconnect?.error?.output?.statusCode
+            if (code === DisconnectReason.loggedOut) {
+                console.log('Logged out. Hapus folder auth dan scan ulang.')
+                process.exit(1)
+            } else {
+                setTimeout(startBot, 3000)
+            }
+        }
+        
+        if (connection === 'open') {
             console.log('✅ Bot terhubung!\n')
 
             // MODE TEST: kirim pesan lalu exit
